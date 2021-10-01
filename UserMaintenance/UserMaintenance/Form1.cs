@@ -19,8 +19,7 @@ namespace UserMaintenance
         public Form1()
         {
             InitializeComponent();
-            label1.Text = textBox1.Text; // label1
-            label2.Text = textBox2.Text; // label2
+            label1.Text = Resource1.FullName; // label1
             button1.Text = Resource1.Add;// button1
             button2.Text = Resource1.Save;
 
@@ -33,8 +32,8 @@ namespace UserMaintenance
         {
             var u = new User()
             {
-                LastName = textBox1.Text,
-                FirstName = textBox2.Text
+                FullName= textBox1.Text,
+
             };
             users.Add(u);
 
