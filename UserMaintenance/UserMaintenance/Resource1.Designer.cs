@@ -81,9 +81,9 @@ namespace UserMaintenance {
         /// <summary>
         ///   Looks up a localized string similar to Fájlba írás.
         /// </summary>
-        internal static string Save {
+        internal static string WriteToFile {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("WriteToFile", resourceCulture);
             }
         }
     }
