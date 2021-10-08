@@ -14,6 +14,7 @@ namespace ExcelExportBVZNBX
 {
     public partial class Form1 : Form
     {
+        private int _million = 1000000;
         RealEstateEntities context = new RealEstateEntities();
 
         List<Flat> lakasok;
@@ -86,6 +87,7 @@ namespace ExcelExportBVZNBX
             }
             object[,] values = new object[lakasok.Count, headers.Length];
             int counter = 0;
+            int floorcolumn = 6;
             foreach (var lakas in lakasok)
             {
                 values[counter, 0] = lakas.Code;
@@ -97,7 +99,10 @@ namespace ExcelExportBVZNBX
                 values[counter, 5] = lakas.NumberOfRooms;
                 values[counter, 6] = lakas.FloorArea;
                 values[counter, 7] = lakas.Price;
-                values[counter, 8] = lakas.FloorArea/lakas.Price;
+                values[counter, 8] = string.Format("={0}/{1}*{2}",
+                    "H"+(counter+2).ToString(),
+                    GetCell(counter+2, floorcolumn+1),
+                    _million.ToString());
 
                 counter++;
                 xlSheet.get_Range(
@@ -113,6 +118,13 @@ namespace ExcelExportBVZNBX
             headerRange.RowHeight = 40;
             headerRange.Interior.Color = Color.LightBlue;
             headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            int lastRowID = xlSheet.UsedRange.Rows.Count;
+            Excel.Range completeTable = xlSheet.get_Range(GetCell(1, 1), GetCell(lastRowID, headers.Length));
+            completeTable.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            Excel.Range lastColumnRange = xlSheet.get_Range(GetCell(2, 9), GetCell(lastRowID, 9));
+            lastColumnRange.Interior.Color = Color.LightGreen;
         }
         private string GetCell(int x, int y)
         {
