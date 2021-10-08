@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Reflection;
 
 namespace ExcelExportBVZNBX
 {
@@ -15,6 +17,9 @@ namespace ExcelExportBVZNBX
         RealEstateEntities context = new RealEstateEntities();
 
         List<Flat> lakasok;
+        Excel.Application xlApp; // A Microsoft Excel alkalmazás
+        Excel.Workbook xlWB; // A létrehozott munkafüzet
+        Excel.Worksheet xlSheet; // Munkalap a munkafüzeten belül
 
         public Form1()
         {
