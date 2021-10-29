@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml;
 using WebServices.Entities;
 using WebServices.MnbServiceReference;
@@ -16,16 +17,17 @@ namespace WebServices
 {
     public partial class Form1 : Form
     {
-        BindingList<RateData> Rates=new BindingList<RateData>();
+        BindingList<RateData> Rates = new BindingList<RateData>();
 
-        
+
         public Form1()
         {
             InitializeComponent();
-            string xmlstring= GetExchangeRates();
+            string xmlstring = GetExchangeRates();
             ProcessXml(xmlstring);
             dataGridView1.DataSource = Rates;
-            
+            Charting();
+
         }
         string GetExchangeRates()
         {
@@ -52,13 +54,28 @@ namespace WebServices
                 r.Currency = child.GetAttribute("curr");
                 r.Value = decimal.Parse(child.InnerText);
                 int unit = int.Parse(child.GetAttribute("unit"));
-                if (unit!=0)
+                if (unit != 0)
                 {
                     r.Value = r.Value / unit;
                 }
                 Rates.Add(r);
             }
 
+        }
+        private void Charting()
+        {
+            chartRate.DataSource = Rates;
+            Series series = chartRate.Series[0];
+            series.ChartType = SeriesChartType.Line;
+            series.XValueMember = "Date";
+            series.YValueMembers = "Value";
+            series.BorderWidth = 2;
+            var chartArea = chartRate.ChartAreas[0];
+            chartArea.AxisX.MajorGrid.Enabled = false;
+            chartArea.AxisY.MajorGrid.Enabled = false;
+            chartArea.AxisY.IsStartedFromZero = false;
+            var legend = chartRate.Legends[0];
+            legend.Enabled = false;
         }
 
     }
