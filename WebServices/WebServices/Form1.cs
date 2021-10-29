@@ -18,17 +18,32 @@ namespace WebServices
     public partial class Form1 : Form
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
+        BindingList<string> Currencies = new BindingList<string>();
 
 
         public Form1()
         {
             InitializeComponent();
+            comboBox1.DataSource = Currencies;
+            MNBArfolyamServiceSoapClient mnbService = new MNBArfolyamServiceSoapClient();
+            GetCurrenciesRequestBody request = new GetCurrenciesRequestBody();
+            var response = mnbService.GetCurrencies(request);
+            string result = response.GetCurrenciesResult;
+            XmlDocument vxml = new XmlDocument();
+            vxml.LoadXml(result);
+            foreach (XmlElement item in vxml.DocumentElement.FirstChild.ChildNodes)
+            {
+                Currencies.Add(item.InnerText);
+            }
+            
+            
             RefreshData();
 
         }
 
         private void RefreshData()
         {
+            if (comboBox1.SelectedItem == null) return;
             Rates.Clear();
             string xmlstring = GetExchangeRates();
             ProcessXml(xmlstring);
@@ -38,6 +53,7 @@ namespace WebServices
 
         string GetExchangeRates()
         {
+            
             MNBArfolyamServiceSoapClient mnbService = new MNBArfolyamServiceSoapClient();
             GetExchangeRatesRequestBody request = new GetExchangeRatesRequestBody();
             request.currencyNames = comboBox1.SelectedItem.ToString(); //"EUR"
@@ -58,6 +74,8 @@ namespace WebServices
                 RateData r = new RateData();
                 r.Date = DateTime.Parse(item.GetAttribute("date"));
                 XmlElement child = (XmlElement)item.FirstChild;
+                if (child == null)
+                    continue;
                 r.Currency = child.GetAttribute("curr");
                 r.Value = decimal.Parse(child.InnerText);
                 int unit = int.Parse(child.GetAttribute("unit"));
