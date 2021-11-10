@@ -37,6 +37,7 @@ namespace FactoryPattern
             this.btnSelectBall = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.BtnPresent = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // mainPanel
@@ -97,11 +98,22 @@ namespace FactoryPattern
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // BtnPresent
+            // 
+            this.BtnPresent.Location = new System.Drawing.Point(488, 293);
+            this.BtnPresent.Name = "BtnPresent";
+            this.BtnPresent.Size = new System.Drawing.Size(152, 23);
+            this.BtnPresent.TabIndex = 5;
+            this.BtnPresent.Text = "PRESENT";
+            this.BtnPresent.UseVisualStyleBackColor = true;
+            this.BtnPresent.Click += new System.EventHandler(this.BtnPresent_Click);
+            // 
             // btnColor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.BtnPresent);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSelectBall);
@@ -123,6 +135,7 @@ namespace FactoryPattern
         private System.Windows.Forms.Button btnSelectBall;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnPresent;
     }
 }
 
