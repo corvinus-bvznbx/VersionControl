@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace FactoryPattern
 {
-    public partial class Form1 : Form
+    public partial class btnColor : Form
     {
         private List<Toy> _toys = new List<Toy>();
         private Toy _nextToy;
@@ -28,7 +28,7 @@ namespace FactoryPattern
             }
         }
 
-        public Form1()
+        public btnColor()
         {
             InitializeComponent();
             Factory = new BallFactory();
@@ -77,6 +77,17 @@ namespace FactoryPattern
             _nextToy.Top = label1.Top + label1.Height + 20;
             _nextToy.Left = label1.Left;
             Controls.Add(_nextToy);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var colorPicker = new ColorDialog();
+
+            colorPicker.Color = button.BackColor;
+            if (colorPicker.ShowDialog() != DialogResult.OK)
+                return;
+            button.BackColor = colorPicker.Color;
         }
     }
 }
