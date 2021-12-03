@@ -21,6 +21,8 @@ namespace MicroSim
         {
             InitializeComponent();
             Population = GetPopulation(@"C:\Users\Lenovo\Downloads\nép-teszt.csv");
+            BirthProbabilities = GetBirthProbabilities(@"C:\Users\Lenovo\Downloads\születés.csv");
+            DeathProbabilities = GetDeathProbabilities(@"C:\Users\Lenovo\Downloads\halál.csv");
 
 
         }
@@ -43,6 +45,47 @@ namespace MicroSim
             }
 
             return population;
+        }
+        public List<Birthprobability> GetBirthProbabilities(string csvpath)
+        {
+            List<Birthprobability> birthprob = new List<Birthprobability>();
+
+            using (StreamReader sr = new StreamReader(csvpath, Encoding.Default))
+            {
+                while (!sr.EndOfStream)
+                {
+                    var line = sr.ReadLine().Split(';');
+                    birthprob.Add(new Birthprobability()
+                    {
+                        Age = int.Parse(line[0]),
+                        NbrOfChildren = int.Parse(line[1]),
+                        P = Convert.ToDouble(line[2])
+                    });
+                }
+            }
+
+            return birthprob;
+        }
+
+        public List<Deathprobability> GetDeathProbabilities(string csvpath)
+        {
+            List<Deathprobability> deathprob = new List<Deathprobability>();
+
+            using (StreamReader sr = new StreamReader(csvpath, Encoding.Default))
+            {
+                while (!sr.EndOfStream)
+                {
+                    var line = sr.ReadLine().Split(';');
+                    deathprob.Add(new Deathprobability()
+                    {
+                        Gender = (Gender)Enum.Parse(typeof(Gender), line[0]),
+                        Age = int.Parse(line[1]),
+                        P = Convert.ToDouble(line[2])
+                    });
+                }
+            }
+
+            return deathprob;
         }
     }
 }
