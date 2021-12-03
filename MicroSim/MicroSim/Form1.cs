@@ -25,23 +25,6 @@ namespace MicroSim
             BirthProbabilities = GetBirthProbabilities(@"C:\Users\Lenovo\Downloads\születés.csv");
             DeathProbabilities = GetDeathProbabilities(@"C:\Users\Lenovo\Downloads\halál.csv");
 
-            for (int year = 2005; year <= 2024; year++)
-            {
-
-                for (int i = 0; i < Population.Count; i++)
-                {
-                    // Ide jön a szimulációs lépés
-                }
-
-                int nbrOfMales = (from x in Population
-                                  where x.Gender == Gender.Male && x.IsAlive
-                                  select x).Count();
-                int nbrOfFemales = (from x in Population
-                                    where x.Gender == Gender.Female && x.IsAlive
-                                    select x).Count();
-                Console.WriteLine(
-                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
-            }
         }
         public List<Person> GetPopulation(string csvpath)
         {
@@ -138,6 +121,68 @@ namespace MicroSim
                     Population.Add(újszülött);
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            var filePath = string.Empty;
+
+            ofd.InitialDirectory = "c:\\";
+            ofd.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            ofd.FilterIndex = 2;
+            ofd.RestoreDirectory = true;
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                filePath = ofd.FileName;
+                textBox1.Text = filePath;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            richTextBox1.Text = "";
+            MalePop.Clear();
+            FemalePop.Clear();
+            Population = GetPopulation(textBox1.Text);
+            Simulation(Convert.ToInt32(numericUpDown1.Value));
+        }
+        private void Simulation(int endyear)
+        {
+            for (int year = 2005; year <= endyear; year++)
+            {
+                for (int i = 0; i < Population.Count; i++)
+                {
+                    SimStep(year, Population[i]);
+                }
+
+                int nbrOfMales = (from x in Population
+                                  where x.Gender == Gender.Male && x.IsAlive
+                                  select x).Count();
+                int nbrOfFemales = (from x in Population
+                                    where x.Gender == Gender.Female && x.IsAlive
+                                    select x).Count();
+                Console.WriteLine(
+                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
+
+                MalePop.Add(nbrOfMales);
+                FemalePop.Add(nbrOfFemales);
+            }
+
+            DisplayResults(endyear);
+        }
+
+        private void DisplayResults(int endyear)
+        {
+            string output = string.Empty;
+
+            for (int year = 2005; year < endyear + 1; year++)
+            {
+                output += "Szimulációs év:" + year + "\n \tFiúk: " + MalePop[year - 2005] + "\n\tLányok: " + FemalePop[year - 2005] + "\n\n";
+            }
+
+            richTextBox1.Text = output;
         }
     }
 }
