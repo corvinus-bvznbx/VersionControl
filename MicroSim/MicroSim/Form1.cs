@@ -17,6 +17,7 @@ namespace MicroSim
         List<Person> Population = new List<Person>();
         List<Birthprobability> BirthProbabilities = new List<Birthprobability>();
         List<Deathprobability> DeathProbabilities = new List<Deathprobability>();
+        Random rng = new Random(1234);
         public Form1()
         {
             InitializeComponent();
